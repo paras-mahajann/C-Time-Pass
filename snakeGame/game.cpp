@@ -8,7 +8,7 @@ const int height = 20;
 const int width = 20;
 int x,y,fruitX,fruitY,score;
 int tailX[100],tailY[100];
-int nTail;
+int nTail=0;
 enum eDirection {STOP=0,LEFT,RIGHT,UP,DOWN};
 eDirection dir;
 
@@ -44,6 +44,7 @@ void draw(){
                     if(tailX[k]==j && tailY[k]==i){
                         cout<<"o";
                         print = true;
+                        break;
                     }
                     if(!print)
                         cout<<" ";
@@ -144,7 +145,7 @@ int main(){
         draw();
         input();
         logic();
-        Sleep(10);
+        Sleep(100);
     }
 
     return 0;
