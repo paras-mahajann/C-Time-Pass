@@ -1,0 +1,15 @@
+#Compiled Files
+*.exe
+*.out
+*.o
+
+
+#Data Files
+accounts.txt
+
+
+#VS Code
+.vscode/
+
+#Temporary Files
+tempCodeRunnerFile.cpp
