@@ -1,4 +1,5 @@
 #include<iostream>
+#include<limits>
 #include<unordered_map>
 #include<vector>
 #include<fstream>
@@ -22,9 +23,7 @@ public:
         this->name = name;
         this->marks = marks;
     }
-    int getRoll(){
-        return this->rollNo;
-    }
+   
     void display()const{
         cout<<"Name : "<<this->name<<endl;
         cout<<"Roll No : "<<this->rollNo<<endl;
@@ -110,12 +109,12 @@ int main(){
                 }
 
                 cout<<"Enter Name : ";
-                cin.ignore();
+                cin.ignore(numeric_limits<streamsize>::max(),'\n');
                 getline(cin,name);
                 
                 cout<<"Enter Marks : ";
                 cin>>marks;
-                while(marks<0 && marks>100){
+                while(marks<0 || marks>100){
                     cout<<"Marks must be between 0 to 100: ";
                     cin>>marks;                    
                 }
@@ -125,14 +124,18 @@ int main(){
                
                 
                 students[rollNo] =  Student(rollNo,name,marks,dept);
+                saveStudents(students);
                 cout<<"Student Added Successfully!\n";
+                
                 break;
             }
             case 2:{
                 cout<<"------------------"<<endl;
                 for(auto &st:students){
                     st.second.display();
+                    cout<<"---------------"<<endl;
                 }
+                cout<<"------------------"<<endl;
 
                 break;
             }
@@ -142,7 +145,9 @@ int main(){
                 cin>>roll;
                 auto it = students.find(roll);
                 if(it!=students.end()){
+                    cout<<"--------------"<<endl;
                     it->second.display();
+                    cout<<"------------------"<<endl;
                 }
                 else{
                     cout<<"Student not found!"<<endl;
@@ -151,34 +156,59 @@ int main(){
             }
             case 4:{
                 //sort by marks
-                vector<pair<int,Student>>temp;
+                vector<Student>temp;
                 for(auto &pair:students){
-                    temp.push_back(pair);
+                    temp.push_back(pair.second);
                 }
 
-                sort(temp.begin(),temp.end(),[](auto &a,auto &b){
-                    return a.second.getMarks()>b.second.getMarks();
+                sort(temp.begin(),temp.end(),[](const Student &a,const Student &b){
+                    return a.getMarks()>b.getMarks();
                 });
-                
-                
-
+                cout<<"--------------------------------------"<<endl;
+                for(auto &s:temp){
+                    s.display();
+                    cout<<"-----------------------"<<endl;
+                }
+                cout<<"--------------------------------------"<<endl;
                 break;
             }
             case 5:{
+                vector<Student>temp;
+                for(auto &pair:students){
+                    temp.push_back(pair.second);
+                }
 
+                sort(temp.begin(),temp.end(),[](const Student &a,const Student &b){
+                    return a.getName()<b.getName();
+                });
+
+                for(auto &s:temp){
+                    cout<<"-------------------------------"<<endl;
+                    s.display();
+                }
+
+                cout<<"-----------------------------------------"<<endl;
                 break;
             }
             case 6:{
+                int roll;
+                cout<<"Enter roll number to delete the student..";
+                cin>>roll;
+
+                if(students.erase(roll))cout<<"Student deleted successfully."<<endl;
+                else cout<<"Student not found!"<<endl;
+                saveStudents(students);
 
                 break;
             }
             case 7:{
+                saveStudents(students);
                 cout<<"Exiting Menu......\n";
                 break;
             }
         }
 
-        saveStudents(students);
+        
 
     }while(choice!=7);
 
