@@ -31,7 +31,15 @@ public:
         cout<<"Department : "<<this->department<<endl;
         cout<<"Marks : "<<this->marks<<endl;
     }
-
+    int getRoll() const{
+        return rollNo;
+    }
+    float getMarks() const{
+        return marks;
+    }
+    string getName() const{
+        return name;
+    }
     void writeToFile(ofstream &fout)const{
         fout<<this->rollNo << " "<<this->name<<" "<<this->marks<<" "<<this->department<<endl;
     }
@@ -107,7 +115,7 @@ int main(){
                 
                 cout<<"Enter Marks : ";
                 cin>>marks;
-                while(marks>=0 && marks<=100){
+                while(marks<0 && marks>100){
                     cout<<"Marks must be between 0 to 100: ";
                     cin>>marks;                    
                 }
@@ -142,6 +150,16 @@ int main(){
                 break;
             }
             case 4:{
+                //sort by marks
+                vector<pair<int,Student>>temp;
+                for(auto &pair:students){
+                    temp.push_back(pair);
+                }
+
+                sort(temp.begin(),temp.end(),[](auto &a,auto &b){
+                    return a.second.getMarks()>b.second.getMarks();
+                });
+                
                 
 
                 break;
